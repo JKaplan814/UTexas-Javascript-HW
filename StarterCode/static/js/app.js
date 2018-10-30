@@ -1,9 +1,22 @@
 // from data.js
 var tableData = data;
 
-var submit = d3.select("#filter-btn")
+var submit = d3.select("#filter-btn");
+
+console.log(tableData);
+
+var tbody = d3.select("tbody");
+
+tableData.forEach((sighting) => {
+  var row = tbody.append("tr");
+  Object.entries(sighting).forEach(([key, value]) => {
+    var cell = tbody.append("td");
+    cell.text(value);
+  });
+});
 
 // YOUR CODE HERE!
+
 submit.on("click", function() {
 
     // Prevent the page from refreshing
@@ -17,19 +30,13 @@ submit.on("click", function() {
     console.log(inputValue);
     console.log(tableData);
 
-    var filteredData = tableData.filter(sighting => sighting.datetime === inputValue);
+    if (inputValue === undefined || inputValue.length == 0) {
 
-    console.log(filteredData);
+      var tbody = d3.select("tbody");
 
-    var table = d3.select("table");
+      console.log(inputValue);
 
-    table.attr("class", "table table-striped");
-
-    var tbody = d3.select("tbody");
-
-    $("#tbody").empty();
-
-    filteredData.forEach((sighting) => {
+      tableData.forEach((sighting) => {
         var row = tbody.append("tr");
         Object.entries(sighting).forEach(([key, value]) => {
           var cell = tbody.append("td");
@@ -38,5 +45,29 @@ submit.on("click", function() {
       });
 
 
+    }
+
+    else {
+      var filteredData = tableData.filter(sighting => sighting.datetime === inputValue);
+
+      console.log(filteredData);
+
+      var table = d3.select("table");
+
+      table.attr("class", "table table-striped");
+
+      var tbody = d3.select("tbody");
+
+      $("#tbody").empty();
+
+      filteredData.forEach((sighting) => {
+          var row = tbody.append("tr");
+          Object.entries(sighting).forEach(([key, value]) => {
+            var cell = tbody.append("td");
+            cell.text(value);
+          });
+      });
+
+    };
 
 });
